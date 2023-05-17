@@ -13,3 +13,6 @@ CHROMA_SETTINGS = Settings(
         persist_directory=PERSIST_DIRECTORY,
         anonymized_telemetry=False
 )
+
+QUEUE_CHANNEL_NAME = "gpt-query-requests"
+LOADER_CHANNEL_NAME = "gpt-loader-channel"
