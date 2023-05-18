@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
-from langchain.embeddings import LlamaCppEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.vectorstores import Chroma
 from langchain.llms import GPT4All, LlamaCpp
@@ -11,7 +11,7 @@ import json
 
 load_dotenv()
 
-llama_embeddings_model = os.environ.get("LLAMA_EMBEDDINGS_MODEL")
+embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")
 persist_directory = os.environ.get('PERSIST_DIRECTORY')
 
 model_type = os.environ.get('MODEL_TYPE')
@@ -21,8 +21,8 @@ model_n_ctx = os.environ.get('MODEL_N_CTX')
 red = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
 
 def main():
-    llama = LlamaCppEmbeddings(model_path=llama_embeddings_model, n_ctx=model_n_ctx)
-    db = Chroma(persist_directory=persist_directory, embedding_function=llama, client_settings=CHROMA_SETTINGS)
+    embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name)
+    db = Chroma(persist_directory=persist_directory, embedding_function=embeddings, client_settings=CHROMA_SETTINGS)
     retriever = db.as_retriever()
     # Prepare the LLM
     callbacks = [StreamingStdOutCallbackHandler()]

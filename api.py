@@ -14,7 +14,6 @@ import json
 
 class Query(BaseModel):
     qry: str
-    repl: str
     uuid: str
 
 class Payload(BaseModel):
@@ -36,7 +35,7 @@ async def load(payload: Payload):
 
 @app.get("/{uuid}")
 async def read(uuid):
-    return {"uuid": uuid, "repl": r.hget("uuid",uuid)}
+    return {"uuid": uuid, "reply": r.hget("uuid",uuid)}
 
 @app.get("/")
 async def status():
